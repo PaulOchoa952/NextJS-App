@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { Patient, PatientFormData } from '../types/patient';
 import { patientService } from '../services/patientService';
 import { PatientForm } from '../components/PatientForm';
+import Link from 'next/link';
 
 export default function Home() {
   const [patients, setPatients] = useState<Patient[]>([]);
@@ -92,7 +93,15 @@ export default function Home() {
 
   return (
     <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6">Patient Management System</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Patient Management System</h1>
+        <Link 
+          href="/appointments" 
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          View Appointments
+        </Link>
+      </div>
       
       {/* Search */}
       <input 
@@ -123,9 +132,9 @@ export default function Home() {
       />
 
       {/* Patients List */}
-      <div className="grid gap-4">
+      <div className="grid gap-4 mt-8">
         {filteredPatients.map((patient) => (
-          <div key={patient.patient_id} className="p-4 border rounded shadow">
+          <div key={patient.patient_id} className="bg-gray-800 p-4 rounded-lg shadow">
             <div className="flex justify-between items-center">
               <div>
                 <h3 className="text-xl font-semibold">
