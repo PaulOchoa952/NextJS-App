@@ -1,0 +1,19 @@
+{
+  "React TypeScript Component": {
+    "prefix": "rtc",
+    "body": [
+      "interface ${1:${TM_FILENAME_BASE}}Props {",
+      "  $2",
+      "}",
+      "",
+      "export function ${1:${TM_FILENAME_BASE}}({ $3 }: ${1:${TM_FILENAME_BASE}}Props) {",
+      "  return (",
+      "    <div>",
+      "      $4",
+      "    </div>",
+      "  );",
+      "}"
+    ],
+    "description": "Create a React TypeScript Component"
+  }
+} 

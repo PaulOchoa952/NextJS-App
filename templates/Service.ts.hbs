@@ -1,0 +1,14 @@
+import { supabase } from '../lib/supabaseClient';
+
+export const {{camelCase name}}Service = {
+  async fetch() {
+    const { data, error } = await supabase
+      .from('{{camelCase name}}')
+      .select('*');
+    
+    if (error) throw error;
+    return data;
+  },
+  
+  // Add more methods here
+}; 
