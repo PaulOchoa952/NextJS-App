@@ -6,6 +6,9 @@ import { Patient, PatientFormData } from '../types/patient';
 import { patientService } from '../services/patientService';
 import { PatientForm } from '../components/PatientForm';
 import Link from 'next/link';
+import { securePatientService } from '../services/securePatientService';
+import { toast } from 'react-toastify';
+import { AccessLogs } from '../components/AccessLogs';
 
 export default function Home() {
   const [patients, setPatients] = useState<Patient[]>([]);
@@ -91,6 +94,17 @@ export default function Home() {
     return fullName.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
+  const handleViewSensitiveData = async (patientId: number) => {
+    try {
+      const secureData = await securePatientService.getEncryptedPatientData(patientId);
+      toast.success('Secure data retrieved successfully');
+      // Handle the secure data...
+    } catch (error) {
+      toast.error('Error accessing secure data');
+      console.error(error);
+    }
+  };
+
   return (
     <div className="p-8">
       <div className="flex justify-between items-center mb-6">
@@ -109,7 +123,7 @@ export default function Home() {
         placeholder="Search patients..." 
         value={searchTerm} 
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="w-full p-2 mb-4 border rounded"
+        className="w-full p-2 mb-4 border rounded bg-gray-700 text-white placeholder-gray-400 border-gray-600"
       />
 
       <PatientForm 
@@ -156,11 +170,19 @@ export default function Home() {
                 >
                   Delete
                 </button>
+                <button
+                  onClick={() => handleViewSensitiveData(patient.patient_id)}
+                  className="px-3 py-1 bg-purple-500 text-white rounded mr-2 hover:bg-purple-600"
+                >
+                  View Secure Data
+                </button>
               </div>
             </div>
           </div>
         ))}
       </div>
+
+      <AccessLogs />
     </div>
   );
 }

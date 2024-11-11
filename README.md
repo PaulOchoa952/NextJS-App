@@ -2,23 +2,32 @@
 
 A Next.js application for managing patient records using Supabase as the backend.
 
+## Features
+
+- 🔐 Authentication with Supabase Auth
+- 👥 Patient Management (CRUD operations)
+- 📅 Appointment Scheduling
+- 🔒 Secure Vault for Sensitive Data
+- 🌙 Dark Mode UI
+- 🚀 Real-time Updates
+- 📱 Responsive Design
+
 ## Tech Stack
 
 - **Frontend Framework:** Next.js 14 with TypeScript
 - **Styling:** Tailwind CSS
 - **Database:** Supabase
 - **Authentication:** Supabase Auth
-- **Development Tools:** 
-  - Plop (Code Generator)
-  - ESLint
-  - Prettier
+- **State Management:** React Context
+- **UI Components:** Custom components with Tailwind
+- **Form Handling:** React Hook Form
+- **Notifications:** React-Toastify
 
 ## Prerequisites
 
 - Node.js 18.17 or later
 - npm or yarn
 - Supabase account and project
-- Docker (for local Supabase development)
 
 ## Installation
 
@@ -73,6 +82,14 @@ create table appointments (
   reason text,
   status text check (status in ('Scheduled', 'Completed', 'Cancelled')) default 'Scheduled',
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+--Access logs table
+CREATE TABLE access_logs (
+  id SERIAL PRIMARY KEY,
+  patient_id INTEGER REFERENCES patients(patient_id), -- Assuming you have a patients table
+  action TEXT NOT NULL,
+  timestamp TIMESTAMPTZ DEFAULT NOW(),
+  api_key_used TEXT NOT NULL
 );
 
 -- Indexes
@@ -148,16 +165,6 @@ src/
 │   └── supabaseClient.ts # Supabase client configuration
 └── styles/               # Global styles
 ```
-
-## Features
-
-- CRUD operations for patient records
-- Real-time updates with Supabase
-- Search functionality
-- Responsive design with Tailwind CSS
-- Type-safe development with TypeScript
-- Code generation with Plop
-- Local development with Supabase Docker container
 
 ## Type Definitions
 
