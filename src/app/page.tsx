@@ -9,6 +9,8 @@ import Link from 'next/link';
 import { securePatientService } from '../services/securePatientService';
 import { toast } from 'react-toastify';
 import { AccessLogs } from '../components/AccessLogs';
+import React from 'react';
+import LoginForm from '../components/LoginForm';
 
 export default function Home() {
   const [patients, setPatients] = useState<Patient[]>([]);
@@ -183,6 +185,12 @@ export default function Home() {
       </div>
 
       <AccessLogs />
+      <Link 
+        href="/login" 
+        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+      >
+        Login
+      </Link>
     </div>
   );
 }
