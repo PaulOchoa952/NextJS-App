@@ -183,6 +183,13 @@ interface Patient {
   created_at?: string;
 }
 ```
+## Create a policy
+1.Go to table editor
+
+2.Click on the table you want to enable the RLS
+
+3.Click on enable RLS policy
+
 
 ## Contributing
 
