@@ -1,12 +1,12 @@
-# Navigate to the project directory
-cd "C:\Users\p_a_u\desktop\supabase"
+
 
 # Check if Docker Desktop is running
 try {
     docker info > $null 2>&1
     if ($LASTEXITCODE -eq 0) {
         Write-Output "Docker Desktop is running."
-
+        # Navigate to the project directory
+        cd "C:\Users\p_a_u\desktop\supabase"
         # Stop the Supabase instance
         npx supabase stop
 

@@ -1,10 +1,8 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { supabase } from './supabaseClient';
+"use client";
 
-interface AuthContextType {
-    user: any; // Replace with your user type
-    loading: boolean;
-}
+import React, { createContext, use, useContext, useEffect, useState } from 'react';
+import { supabase } from './supabaseClient';
+import { AuthContextType } from '../types/AuthContextType';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -25,9 +23,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             subscription?.subscription?.unsubscribe();
         };
     }, []);
-
     return (
-        <AuthContext.Provider value={{ user, loading }}>
+        <AuthContext.Provider value={{ 
+            user, 
+            loading, 
+            signOut: async () => { 
+                await supabase.auth.signOut(); 
+                return; // Ensure it returns void
+            } 
+        }}>
             {children}
         </AuthContext.Provider>
     );
