@@ -1,24 +1,26 @@
 "use client";
-
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../lib/AuthContext';
+import { useRouter } from 'next/navigation';
 
-const ClientProtectedLayout = ({ children }: { children: React.ReactNode }) => {
+const ClientProtectedLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push('/login'); // Redirige a login si el usuario no está autenticado
+      console.log('User not authenticated, redirecting to login...');
+      setIsRedirecting(true);
+      router.push('/'); // Redirige al usuario si no está autenticado
     }
-  }, [user, loading, router]);
+  }, [loading, user, router]);
 
-  if (loading) {
-    return <div>Loading...</div>; // Muestra un estado de carga
+  if (loading || isRedirecting) {
+    return <div>Loading...</div>; // Mostrar estado de carga mientras se verifica la autenticación
   }
 
-  return <>{children}</>; // Renderiza el contenido si el usuario está autenticado
+  return <>{children}</>; // Renderizar contenido protegido
 };
 
 export default ClientProtectedLayout;

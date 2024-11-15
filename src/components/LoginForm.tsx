@@ -11,7 +11,7 @@ const LoginForm = () => {
         setError(null); // Reset error state
 
         // Use Supabase to sign in
-        const { data: { user }, error } = await supabase.auth.signInWithPassword({
+        const { error } = await supabase.auth.signInWithPassword({
             email,
             password,
         });
@@ -19,7 +19,7 @@ const LoginForm = () => {
         if (error) {
             console.error('Error logging in:', error.message);
         } else {
-            window.location.href = '/'; // Redirect to the home page if login is successful
+            window.location.href = '/patients'; // Redirect to the home page if login is successful
         }
     };
 

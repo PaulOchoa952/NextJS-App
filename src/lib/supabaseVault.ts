@@ -1,22 +1,18 @@
 import { supabase } from './supabaseClient';
 
 export const vaultService = {
-  async getSecret(name: string) {
+  async getSecret(secretName: string) {
     const { data, error } = await supabase
       .from('vault')
-      .select('secret')
-      .eq('name', name)
+      .select('secret_value')
+      .eq('secret_name', secretName)
       .single();
     
-    if (error) throw error;
-    return data?.secret;
-  },
+    if (error) {
+      console.error('Error fetching secret:', error);
+      throw error;
+    }
 
-  async setSecret(name: string, secret: string) {
-    const { error } = await supabase
-      .from('vault')
-      .insert([{ name, secret }]);
-    
-    if (error) throw error;
+    return data.secret_value;
   }
 }; 

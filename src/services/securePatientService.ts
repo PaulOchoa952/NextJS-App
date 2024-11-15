@@ -43,5 +43,16 @@ export const securePatientService = {
     } catch (error) {
       console.error('Error logging access:', error);
     }
+  },
+
+  // Logout method
+  async logout() {
+    try {
+      await supabase.auth.signOut();
+      return { success: true, message: 'User logged out successfully' };
+    } catch (error) {
+      console.error('Error logging out:', error);
+      throw error;
+    }
   }
 }; 

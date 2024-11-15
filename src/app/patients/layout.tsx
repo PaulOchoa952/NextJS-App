@@ -1,7 +1,7 @@
 "use client";
 import ClientProtectedLayout from "../../components/clientProtectedLayout";
 
-export default function AppointmentsLayout({
+export default function PatientsLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -9,8 +9,11 @@ export default function AppointmentsLayout({
   return (
     <ClientProtectedLayout>
       <div className="min-h-screen bg-black">
-        <div className="max-w-7xl mx-auto py-6">{children}</div>
+        <div className="max-w-7xl mx-auto py-6">
+          {children}
+        </div>
       </div>
     </ClientProtectedLayout>
+
   );
 } 
