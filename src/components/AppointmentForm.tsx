@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { AppointmentFormData } from '../types/appointment';
 import { Patient } from '../types/patient';
 import { patientService } from '../services/patientService';
+import { toast } from 'react-toastify';
 
 interface AppointmentFormProps {
   onSubmit: (data: AppointmentFormData) => Promise<void>;
@@ -49,6 +50,7 @@ export function AppointmentForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await onSubmit(formData);
+    toast.success(isEditing ? 'Appointment updated successfully!' : 'Appointment scheduled successfully!');
     if (!isEditing) {
       setFormData({
         patient_id: patientId || (patients[0]?.patient_id || 0),

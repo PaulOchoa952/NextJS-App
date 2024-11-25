@@ -1,6 +1,5 @@
 import { vaultService } from '../lib/supabaseVault';
 import { supabase } from '../lib/supabaseClient';
-import { Patient } from '../types/patient';
 
 export const securePatientService = {
   async getEncryptedPatientData(patientId: number) {

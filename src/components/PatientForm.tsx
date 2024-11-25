@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { PatientFormData } from '../types/patient';
+import { toast } from 'react-toastify';
 
 interface PatientFormProps {
   onSubmit: (data: PatientFormData) => Promise<void>;
@@ -31,18 +32,24 @@ export function PatientForm({ onSubmit, initialData, isEditing, onCancel }: Pati
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onSubmit(formData);
-    if (!isEditing) {
-      setFormData({
-        first_name: '',
-        last_name: '',
-        date_of_birth: '',
-        gender: '',
-        contact_number: '',
-        email: '',
-        address: '',
-        created_at: '',
-      });
+    try {
+      await onSubmit(formData);
+      toast.success(isEditing ? 'Patient updated successfully!' : 'Patient added successfully!');
+      if (!isEditing) {
+        setFormData({
+          first_name: '',
+          last_name: '',
+          date_of_birth: '',
+          gender: '',
+          contact_number: '',
+          email: '',
+          address: '',
+          created_at: '',
+        });
+      }
+    } catch (error) {
+      toast.error('Error saving patient');
+      console.error('Error saving patient:', error);
     }
   };
 
