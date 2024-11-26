@@ -35,7 +35,8 @@ A Next.js application for managing patient records using Supabase as the backend
 ```bash
 git clone <repository-url>
 cd patient-management-system
-```
+ ```
+ ```sql
 
 2. Install dependencies:
 ```bash
@@ -215,6 +216,50 @@ interface Patient {
 3. **Database Errors**
    - Verify table schema matches type definitions
    - Check Supabase policies are correctly set
+
+4. **pg_crypto Extension Issues**
+   - Error: ERROR: 0A000: extension "pg_crypto" is not available DETAIL: Could not open extension control file "/usr/share/postgresql/15/extension/pg_crypto.control": No such file or directory. HINT: The extension must first be installed on the system where PostgreSQL is running.
+   - Opciones y soluciones:
+       ```sql
+       SELECT * FROM pg_available_extensions WHERE name = 'pgcrypto';
+       ```
+       ![Alt text](/images/image.png)
+<!-- Image link removed due to broken path -->
+     - Ahora, el siguiente paso es intentar habilitar la extensión en tu esquema de base de datos. Puedes hacerlo con el siguiente comando SQL:
+       ```sql
+       CREATE EXTENSION IF NOT EXISTS pgcrypto;
+       ```
+     - Ejemplo de Inserción y Cifrado de Datos con pgcrypto:
+       - Insertar Datos con Cifrado: Supongamos que tienes una tabla patients con las columnas id, name y encrypted_name, y deseas cifrar el campo name al insertarlo:
+         ```sql
+         INSERT INTO patients (name, encrypted_name)
+         VALUES ('Juan Pérez', pgp_sym_encrypt('Juan Pérez', 'my_secret_key'));
+         ```
+       - Pasos para agregar la columna y almacenar datos cifrados:
+         - Agregar la Columna para Almacenar los Datos Cifrados: Primero, debes modificar tu tabla para agregar la nueva columna que almacenará los datos cifrados. Puedes hacerlo con el siguiente comando SQL:
+           ```sql
+           ALTER TABLE patients
+           ADD COLUMN encrypted_name bytea;
+           ```
+         - Insertar Datos Cifrados en la Nueva Columna: Luego, al insertar o actualizar los datos, puedes cifrar el campo name y almacenarlo en la columna encrypted_name usando la función pgp_sym_encrypt:
+           ```sql
+           UPDATE patients
+           SET encrypted_name = pgp_sym_encrypt(name, 'my_secret_key');
+           ```
+         - Si estás insertando nuevos datos, se vería así:
+          ```sql
+          /* INSERT INTO patients (first_name, last_name,date_of_birth,gender,contact_number,email,address, encrypted_name)
+          VALUES ('Juan', 'Pérez','2024-11-26','Female','555-8765','juan@gmail.com','av.del trabajo#37', pgp_sym_encrypt('Juan Pérez', 'my_secret_key')); */
+          --select*from patients
+          ```
+       - Recuperar y Descifrar los Datos: Para obtener los datos descifrados, puedes usar la función pgp_sym_decrypt en la consulta SQL:
+       ```sql
+       SELECT first_name, pgp_sym_decrypt(encrypted_name::bytea, 'my_secret_key') as decrypted_name
+       FROM patients;
+       ```
+         ```
+
+CREATE EXTENSION IF NOT EXISTS pg_crypto;
 
 ## License
 
